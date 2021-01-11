@@ -9,12 +9,16 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import ktx.actors.setKeyboardFocus
 import ktx.app.KtxScreen
 import pl.peteef.beatmeter.app.input.KeyboardInputRecorder
+import pl.peteef.beatmeter.engine.Engine
 
 object BeatMeter : KtxScreen {
-    val stage = Stage()
+    private val stage = Stage()
+
+    private val keyboardInputRecorder = KeyboardInputRecorder()
+    private val engine = Engine(keyboardInputRecorder)
 
     private val font = BitmapFont().apply {
-        data.setScale(3f)
+        data.setScale(1f)
     }
 
     private val batch = SpriteBatch().apply {
@@ -24,18 +28,16 @@ object BeatMeter : KtxScreen {
     override fun render(delta: Float) {
         batch.begin()
         batch.let {
-            font.draw(it, "Hello Beatmeter!", 0f, 600f)
+            font.draw(it, engine.inputRecorder.values().lastOrNull().toString() , 20f, 580f)
         }
         batch.end()
     }
 
     override fun show() {
-        val recorder = KeyboardInputRecorder()
-        recorder.onInput { r -> println(r) }
-        stage.addActor(recorder.listener)
-        recorder.listener.setKeyboardFocus()
+        keyboardInputRecorder.onInput { r -> println(r) }
+        stage.addActor(keyboardInputRecorder.listener)
+        keyboardInputRecorder.listener.setKeyboardFocus()
         Gdx.input.inputProcessor = InputMultiplexer(stage)
-        recorder.start()
     }
 
     override fun dispose() {
