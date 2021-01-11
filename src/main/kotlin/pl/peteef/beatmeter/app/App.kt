@@ -8,7 +8,7 @@ object App {
     @JvmStatic
     fun main(args: Array<String>) {
         println("Hello Beatmeter!")
-        LwjglApplication(KtxApp(), LwjglApplicationConfiguration().apply {
+        LwjglApplication(KtxApp, LwjglApplicationConfiguration().apply {
             title = "Beatmeter"
             width = 800
             height = 600

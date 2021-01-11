@@ -17,6 +17,7 @@ dependencies {
     compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
     compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
     compile "io.github.libktx:ktx-app:$ktxVersion"
+    compile "io.github.libktx:ktx-actors:$ktxVersion"
 }
 
 jar {
@@ -29,4 +30,11 @@ jar {
             it.isDirectory() ? it : zipTree(it)
         }
     }
+}
+
+task freshRun(type: Exec) {
+    dependsOn build
+    group = "execution"
+    description = "Run the output executable jar with ExecTask"
+    commandLine "java", "-jar", jar.archiveFile.get()
 }
